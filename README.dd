@@ -1,0 +1,9 @@
+BUILD
+
+docker-compose up -d --build
+
+MIGRATE
+docker exec -it shop_app php migrate.php
+
+LINK
+http://localhost:8005/categories
