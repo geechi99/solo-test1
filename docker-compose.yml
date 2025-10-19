@@ -1,0 +1,53 @@
+version: '3.0'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: shop_app
+    ports:
+      - "8005:8006"
+    volumes:
+      - ./:/var/www/html:cached
+      - ./public/uploads:/var/www/html/public/uploads
+    environment:
+      - TZ=Europe/Kyiv
+      - COMPOSER_ALLOW_SUPERUSER=1
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_NAME=test_shop
+      - DB_USER=user
+      - DB_PASS=password
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+    container_name: shop_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: test_shop
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: shop_phpmyadmin
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: root
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+
+volumes:
+  db_data:

@@ -1,0 +1,13 @@
+{
+  "name": "yourname/test-shop",
+  "description": "Tiny shop example",
+  "require": {
+    "php": ">=7.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "Core\\": "core/",
+      "App\\": "app/"
+    }
+  }
+}
